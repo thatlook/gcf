@@ -1,9 +1,16 @@
 import * as React from 'react';
 import { Routes, Route, Outlet, Link } from 'react-router-dom';
+import { QueryParamProvider } from 'use-query-params';
+import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
+import qs from 'query-string';
+import styled from '@emotion/styled';
 
 import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import ProjectDetail from './pages/ProjectDetail';
+import Projects from './pages/Projects';
 import AppBarComponent from './components/AppBar';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -11,11 +18,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      // Purple and green play nicely together.
       main: '#15a14a'
     },
     secondary: {
-      // This is green.A700 as hex.
       main: '#084081'
     },
     success: {
@@ -41,10 +46,7 @@ const theme = createTheme({
     overline
   */
   typography: {
-    subtitle1: {
-      textTransform: 'uppercase'
-    },
-    body2: {
+    h6: {
       textTransform: 'capitalize'
     }
   }
@@ -53,21 +55,36 @@ const theme = createTheme({
 export default function App() {
   return (
     <div>
-      {/* Routes nest inside one another. Nested route paths build upon
-            parent route paths, and nested route elements render inside
-            parent route elements. See the note about <Outlet> below. */}
       <ThemeProvider theme={theme}>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Project />} />
-            <Route path="project/:id" element={<ProjectDetail />} />
+        <QueryParamProvider
+          adapter={ReactRouter6Adapter}
+          options={{
+            searchStringToObject: qs.parse,
+            objectToSearchString: qs.stringify
+          }}
+        >
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Projects />} />
+              <Route path="project/:id" element={<ProjectDetail />} />
+              <Route
+                path="countries/:id"
+                element={
+                  <PageWrapper>
+                    <Container>
+                      <Typography gutterBottom variant="h3">
+                        Coming Soon
+                      </Typography>
+                      <Link to="/">Go to the home page</Link>
+                    </Container>
+                  </PageWrapper>
+                }
+              />
 
-            {/* Using path="*"" means "match anything", so this route
-                acts like a catch-all for URLs that we don't have explicit
-                routes for. */}
-            <Route path="*" element={<NoMatch />} />
-          </Route>
-        </Routes>
+              <Route path="*" element={<NoMatch />} />
+            </Route>
+          </Routes>
+        </QueryParamProvider>
       </ThemeProvider>
     </div>
   );
@@ -75,32 +92,37 @@ export default function App() {
 
 function Layout() {
   return (
-    <div>
+    <BoxWrapper>
       <AppBarComponent />
-
-      {/* An <Outlet> renders whatever child route is currently active,
-          so you can think about this <Outlet> as a placeholder for
-          the child routes we defined above. */}
       <Outlet />
-    </div>
-  );
-}
-
-function Project() {
-  return (
-    <div>
-      <h2>Projects</h2>
-    </div>
+    </BoxWrapper>
   );
 }
 
 function NoMatch() {
   return (
-    <div>
-      <h2>Nothing to see here!</h2>
-      <p>
+    <PageWrapper>
+      <Container>
+        <Typography gutterBottom variant="h3">
+          Nothing to see here!
+        </Typography>
         <Link to="/">Go to the home page</Link>
-      </p>
-    </div>
+      </Container>
+    </PageWrapper>
   );
 }
+
+const BoxWrapper = styled(Box)`
+  background-color: #f6f7f8;
+`;
+
+const PageWrapper = styled(Box)`
+  background-color: #f6f7f8;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`;
