@@ -26,3 +26,17 @@ export const filterKeys = {
   Countries: CountriesRegion,
   ResultAreas: ResultAreasArea
 };
+
+export const formatCurrency = (num, currency = 'USD') => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0
+  }).format(num);
+};
+
+export const formatNumber = num => {
+  return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(
+    num
+  );
+};

@@ -19,6 +19,7 @@ import BasicTimeline from '../components/BasicTimeline';
 import { useFetch } from '../hooks/useFetch';
 import FundingTable from '../components/FundingTable';
 import DisbursementTable from '../components/DisbursementTable';
+import { formatCurrency, formatNumber } from '../utils';
 
 const ProjectDetail = () => {
   const { id } = useParams();
@@ -43,7 +44,7 @@ const ProjectDetail = () => {
 
       <SectionWrapper>
         <Typography variant="h3">Overview</Typography>
-        <Grid container direction="row" justifyContent="space-between">
+        <Grid container direction="row" spacing="8">
           {[
             { title: 'status', value: 'approved' },
             {
@@ -55,13 +56,11 @@ const ProjectDetail = () => {
             { title: 'ess category', value: data['RiskCategory'] }
           ].map(k => {
             return (
-              <Grid item key={k.title}>
+              <Grid item key={k.title} flexGrow="1">
                 <Card variant="outlined">
                   <CardContent>
                     <Typography variant="h6">{k.title}</Typography>
-                    <Typography variant="body2" color="primary">
-                      {k.value}
-                    </Typography>
+                    <Typography color="primary">{k.value}</Typography>
                   </CardContent>
                 </Card>
               </Grid>
@@ -74,18 +73,21 @@ const ProjectDetail = () => {
         <Typography variant="h3">Impact</Typography>
         <Grid container direction="column" spacing="8">
           {[
-            { title: 'total project value', value: data['TotalValue'] },
+            {
+              title: 'total project value',
+              value: formatNumber(data['TotalValue'])
+            },
             {
               title: 'Tonnes of emissions avoided',
-              value: data['LifeTimeCO2']
+              value: formatNumber(data['LifeTimeCO2'])
             },
             {
               title: 'indirect beneficiaries',
-              value: data['IndirectBeneficiaries']
+              value: formatNumber(data['IndirectBeneficiaries'])
             },
             {
               title: 'direct beneficiaries',
-              value: data['DirectBeneficiaries']
+              value: formatNumber(data['DirectBeneficiaries'])
             },
             { title: 'theme', value: data['Theme'] }
           ].map(k => {
@@ -94,9 +96,7 @@ const ProjectDetail = () => {
                 <Card variant="outlined">
                   <CardContent>
                     <Typography variant="h6">{k.title}</Typography>
-                    <Typography variant="body2" color="primary">
-                      {k.value}
-                    </Typography>
+                    <Typography color="primary">{k.value}</Typography>
                   </CardContent>
                 </Card>
               </Grid>
@@ -150,11 +150,11 @@ const ProjectDetail = () => {
             },
             {
               title: 'total GCF funding',
-              value: data['TotalGCFFunding']
+              value: formatCurrency(data['TotalGCFFunding'])
             },
             {
               title: 'total co-financing',
-              value: data['TotalCoFinancing']
+              value: formatCurrency(data['TotalCoFinancing'])
             }
           ].map(k => {
             return (
@@ -162,9 +162,7 @@ const ProjectDetail = () => {
                 <Card variant="outlined">
                   <CardContent>
                     <Typography variant="h6">{k.title}</Typography>
-                    <Typography variant="body2" color="primary">
-                      {k.value}
-                    </Typography>
+                    <Typography color="primary">{k.value}</Typography>
                   </CardContent>
                 </Card>
               </Grid>

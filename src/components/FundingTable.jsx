@@ -7,6 +7,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import { formatCurrency } from '../utils';
+
 const FundingTable = ({ data }) => {
   if (!data) {
     return null;
@@ -22,7 +24,6 @@ const FundingTable = ({ data }) => {
             <TableCell align="right">Source</TableCell>
             <TableCell align="right">Instrument</TableCell>
             <TableCell align="right">Budget</TableCell>
-            <TableCell align="right">Currency</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -34,8 +35,9 @@ const FundingTable = ({ data }) => {
               <TableCell align="right">{row.BM}</TableCell>
               <TableCell align="right">{row.Source}</TableCell>
               <TableCell align="right">{row.Instrument}</TableCell>
-              <TableCell align="right">{row.Budget}</TableCell>
-              <TableCell align="right">{row.Currency}</TableCell>
+              <TableCell align="right">
+                {formatCurrency(row.Budget, row.Currency)}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
