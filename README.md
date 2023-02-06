@@ -6,6 +6,7 @@
 
 ## How to run locally
 
+- (developed with node version v18.14.0)
 - `yarn install`
 - `node server.js` (will run on port 3000)
 - `yarn start` (will run on port 3001)
