@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { FixedSizeList } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
-import { isArray, remove, isEmpty } from 'lodash';
+import { isArray, filter, isEmpty } from 'lodash';
 import { useQueryParams, StringParam, ArrayParam } from 'use-query-params';
 import styled from '@emotion/styled';
 
@@ -33,24 +33,22 @@ const Projects = () => {
     query
   );
 
-  const handleToggle = useCallback(
-    (title, value) => {
-      const arr = query[title];
-      if (arr) {
-        if (arr.includes(value)) {
-          // untoggle
-          remove(arr, v => v === value);
+  const handleToggle = (title, value) => {
+    const arr = query[title];
 
-          setQuery({ ...query, [title]: arr }, 'replace');
-        } else {
-          setQuery({ ...query, [title]: [...arr, value] }, 'replace');
-        }
-      } else {
-        setQuery({ ...query, [title]: [value] }, 'replace');
-      }
-    },
-    [query]
-  );
+    // first filter
+    if (!arr || !arr.length) {
+      return setQuery({ ...query, [title]: [value] }, 'replace');
+    }
+
+    // uncheck
+    if (arr.includes(value)) {
+      const newArr = filter(arr, v => v !== value);
+      return setQuery({ ...query, [title]: newArr }, 'replace');
+    }
+    // add check
+    return setQuery({ ...query, [title]: [...arr, value] }, 'replace');
+  };
 
   const Row = ({ index, style }) => {
     return (
