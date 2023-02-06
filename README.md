@@ -1,70 +1,36 @@
-# Getting Started with Create React App
+# GCF Portfolio
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Tech Stack
 
-## Available Scripts
+- CRA, Express, Javascript
 
-In the project directory, you can run:
+## How to run locally
 
-### `npm start`
+- `yarn install`
+- `node server.js` (will run on port 3000)
+- `yarn start` (will run on port 3001)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+![main page](screenshot_main_page.png)
+![detail page](screenshot_detail_page.png)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Files
 
-### `npm test`
+- `server.js`: express server to call `https://api.gcfund.org/v1/projects`, filter projects, and return project detail by id
+- `App.js`: where routes, MUI theme, appBar is kept
+- `src/components`: common components
+- `src/pages`: page components
+  - `src/pages/ProjectDetail.jsx`: detail page of project (for route `/project/:id`)
+  - `src/pages/Projects.jsx`: main page that shows project list and filters (for route `/`)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Packages
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- `MUI`: to create fast styled UI components
+- `recharts`: to create pie chart in project detail page
+- `emotion`: to use css
+- `axios`: to use when fetching data
+- `react-window-infinite-loader`: to implement infinite loading in main page
+- `query-string`: to parse/stringify query strings
+- `use-query-params`: to set query string in route when adding filter to main page
+- `fuse.js`: to implement search from json file
+- `luxon`: to format datetime
+- `express`: to create server
