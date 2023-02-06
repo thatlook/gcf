@@ -9,6 +9,43 @@ const server = express();
 server.use(cors());
 
 const url = 'https://api.gcfund.org/v1/projects';
+
+const filterNestedCountries = (allData, value) => {
+  return lodash.filter(allData, d => {
+    const found = lodash.filter(
+      d['Countries'],
+      ({ Region }) => Region === value
+    );
+    if (found.length) {
+      return true;
+    }
+    return false;
+  });
+};
+
+const filterNestedResultArea = (allData, value) => {
+  return lodash.filter(allData, d => {
+    const found = lodash.filter(d['ResultAreas'], ({ Area, Value }) => {
+      const isMatch = Area === value;
+      const hasValue = !!Number(Value.replace('%', ''));
+      return isMatch && hasValue;
+    });
+    if (found.length) {
+      return true;
+    }
+    return false;
+  });
+};
+
+const filterOthers = (allData, key, value) => {
+  return lodash.filter(allData, d => {
+    if (d[key] === value) {
+      return true;
+    }
+    return false;
+  });
+};
+
 server.get('/all', async (req, res) => {
   const db = await axios({
     url,
@@ -24,13 +61,13 @@ server.get('/all', async (req, res) => {
 
     if (!lodash.isEmpty(queryObj)) {
       filtered = Object.keys(queryObj).reduce((prev, key) => {
-        const f = lodash.filter(prev, d => {
-          if (d[key] === queryObj[key]) {
-            return true;
-          }
-          return false;
-        });
-        return f;
+        if (key === 'Countries') {
+          return filterNestedCountries(prev, queryObj[key]);
+        } else if (key === 'ResultAreas') {
+          return filterNestedResultArea(prev, queryObj[key]);
+        } else {
+          return filterOthers(prev, key, queryObj[key]);
+        }
       }, filtered);
     }
 
@@ -56,9 +93,7 @@ server.get('/all', async (req, res) => {
       };
       const fuse = new Fuse(filtered, options);
       const found = fuse.search(keyword);
-      if (found.length) {
-        filtered = found;
-      }
+      filtered = found;
     }
 
     // size
