@@ -35,3 +35,7 @@
 - `fuse.js`: to implement search from json file
 - `luxon`: to format datetime
 - `express`: to create server
+
+## Notes
+
+- There is an issue of pages being loaded twice
